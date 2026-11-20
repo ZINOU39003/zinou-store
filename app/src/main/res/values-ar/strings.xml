@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lang">ar</string>
+    <string name="subtitle">تطبيقاتك دائماً محدّثة</string>
+    <string name="search_hint">ابحث عن تطبيق…</string>
+    <string name="filter_all">الكل</string>
+    <string name="filter_updates">التحديثات</string>
+    <string name="filter_installed">المثبتة</string>
+    <string name="install">تثبيت</string>
+    <string name="update">تحديث</string>
+    <string name="open">فتح</string>
+    <string name="empty">لا توجد تطبيقات هنا بعد</string>
+    <string name="allow_install">اسمح لـ Zinou Store بتثبيت التطبيقات ثم اضغط مرة أخرى</string>
+    <string name="load_error">تعذر تحميل المتجر، تحقق من الإنترنت</string>
+    <string name="download_error">فشل التنزيل</string>
+    <string name="updates_title">تحديثات جديدة متاحة</string>
+    <string name="channel_name">التحديثات</string>
+    <string name="language">اللغة</string>
+    <string name="update_badge">تحديث</string>
+    <string name="version_fmt">الإصدار %1$s</string>
+    <string name="whats_new">الجديد: %1$s</string>
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lang">fr</string>
+    <string name="subtitle">Vos applications, toujours à jour</string>
+    <string name="search_hint">Rechercher une application…</string>
+    <string name="filter_all">Toutes</string>
+    <string name="filter_updates">Mises à jour</string>
+    <string name="filter_installed">Installées</string>
+    <string name="install">Installer</string>
+    <string name="update">Mettre à jour</string>
+    <string name="open">Ouvrir</string>
+    <string name="empty">Aucune application pour le moment</string>
+    <string name="allow_install">Autorisez Zinou Store à installer des applications, puis réessayez</string>
+    <string name="load_error">Impossible de charger le store. Vérifiez votre connexion.</string>
+    <string name="download_error">Échec du téléchargement</string>
+    <string name="updates_title">Nouvelles mises à jour disponibles</string>
+    <string name="channel_name">Mises à jour</string>
+    <string name="language">Langue</string>
+    <string name="update_badge">MAJ</string>
+    <string name="version_fmt">Version %1$s</string>
+    <string name="whats_new">Nouveautés : %1$s</string>
+</resources>
