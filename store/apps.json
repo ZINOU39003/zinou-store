@@ -76,7 +76,7 @@
       "versionName": "138.0.7204.179",
       "size": "152.7 MB",
       "apkUrl": "https://github.com/ZINOU39003/zinou-store/releases/download/com.android.chrome-v720417920/Chrome.apk",
-      "icon": ""
+      "icon": "https://raw.githubusercontent.com/ZINOU39003/zinou-store/main/store/icons/com.android.chrome.png?v=720417920"
     }
   ]
 }

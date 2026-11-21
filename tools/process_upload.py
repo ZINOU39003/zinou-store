@@ -106,7 +106,14 @@ def main():
     if up:
         icon = (open(up[0], "rb").read(), up[0].rsplit(".", 1)[-1].lower())
     elif not old or not old.get("icon"):
-        icon = pick_icon(apk_path, apk)
+        try:
+            from icon_extract import extract_icon
+            png = extract_icon(apk_path)
+            icon = (png, "png") if png else None
+        except Exception as e:
+            print("icon_extract failed:", e)
+            icon = None
+        icon = icon or pick_icon(apk_path, apk)
     if icon:
         os.makedirs(os.path.join(MAIN_DIR, "store", "icons"), exist_ok=True)
         for f in glob.glob(os.path.join(MAIN_DIR, "store", "icons", pkg + ".*")):
