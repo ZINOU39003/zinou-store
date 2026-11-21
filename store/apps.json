@@ -48,6 +48,23 @@
       "changelog": "First release",
       "changelog_ar": "أول إصدار",
       "changelog_fr": "Première version"
+    },
+    {
+      "packageName": "com.zinou.top",
+      "name": "ZINOU TOP",
+      "name_ar": "ZINOU TOP",
+      "name_fr": "ZINOU TOP",
+      "description": "ZINOU TOP for Android TV boxes.",
+      "description_ar": "تطبيق ZINOU TOP لأجهزة TV Box بنظام أندرويد.",
+      "description_fr": "ZINOU TOP pour les box TV Android.",
+      "icon": "https://raw.githubusercontent.com/ZINOU39003/zinou-store/main/store/icons/zinou-top.png",
+      "versionCode": 10000,
+      "versionName": "1.0.0",
+      "size": "38 MB",
+      "apkUrl": "https://github.com/ZINOU39003/zinou-top/releases/download/v1.0.0/ZinouTop-v1.0.0.apk",
+      "changelog": "First release",
+      "changelog_ar": "أول إصدار",
+      "changelog_fr": "Première version"
     }
   ]
 }
