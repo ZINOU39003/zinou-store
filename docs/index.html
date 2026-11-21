@@ -426,7 +426,9 @@ $('btnUpload').onclick = async () => {
     document.querySelectorAll('.lang input, .lang textarea').forEach(x => x.value = '');
     loadApps();
   } catch (e) {
-    if (e) step('خطأ: ' + e.message, 'err');
+    if (e) step(e.status === 403
+      ? 'المفتاح لا يملك صلاحية الكتابة: عدّل المفتاح في GitHub واجعل Contents = Read and write'
+      : 'خطأ: ' + e.message, 'err');
     btn.disabled = !apk;
     return;
   }
