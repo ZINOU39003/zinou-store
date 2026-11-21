@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>لوحة تحكم Zinou Store</title>
+<link rel="icon" href="https://raw.githubusercontent.com/ZINOU39003/zinou-store/main/store/icons/zinou-store.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:#6A3CF0; --blue:#2F80ED; --accent:#FF8A3D; --bg:#F5F3FC;
+    --text:#1C1838; --soft:#6F6A8A; --line:#E7E3F5; --danger:#E5484D; --ok:#18A058;
+    --card:#fff; --radius:20px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Cairo,system-ui,sans-serif;background:var(--bg);color:var(--text)}
+  header{background:linear-gradient(135deg,#7B3FF2,#5A55EE 55%,#2F80ED);color:#fff;padding:28px 20px 70px;
+    border-radius:0 0 32px 32px;position:relative;overflow:hidden}
+  header::after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:#ffffff18;top:-110px;left:-80px}
+  .wrap{max-width:1000px;margin:0 auto;position:relative;z-index:1}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand img{width:60px;height:60px;border-radius:18px;background:#ffffff30;padding:4px}
+  .brand h1{margin:0;font-size:26px;font-weight:800}
+  .brand p{margin:0;opacity:.85}
+  .brand .sp{flex:1}
+  main{max-width:1000px;margin:-46px auto 40px;padding:0 16px;position:relative;z-index:2}
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:0 6px 24px #3b2a8a14;padding:20px;margin-bottom:18px}
+  .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .grow{flex:1}
+  h2{margin:0 0 4px;font-size:19px}
+  .muted{color:var(--soft);font-size:14px}
+  button,.btn{font-family:inherit;font-weight:700;font-size:15px;border:0;border-radius:999px;padding:10px 20px;cursor:pointer;
+    background:var(--brand);color:#fff;transition:transform .1s,opacity .2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+  button:hover{opacity:.92} button:active{transform:scale(.97)}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  .ghost{background:#EEE8FF;color:var(--brand)}
+  .danger{background:#FDECEC;color:var(--danger)}
+  .light{background:#ffffff26;color:#fff}
+  input[type=text],input[type=password],textarea{width:100%;font-family:inherit;font-size:15px;border:1.5px solid var(--line);
+    border-radius:14px;padding:10px 14px;background:#FBFAFF;color:var(--text);outline:none}
+  input:focus,textarea:focus{border-color:var(--brand);background:#fff}
+  textarea{resize:vertical;min-height:64px}
+  label.f{display:block;font-weight:600;font-size:14px;margin:12px 0 6px}
+  .drop{border:2px dashed #CFC4F7;border-radius:18px;padding:26px;text-align:center;cursor:pointer;background:#FBFAFF;transition:.2s}
+  .drop.over,.drop:hover{border-color:var(--brand);background:#F3EEFF}
+  .drop b{color:var(--brand)}
+  .tabs{display:flex;gap:6px;margin-top:16px}
+  .tab{background:#F1EEFA;color:var(--soft);padding:7px 16px;font-size:14px}
+  .tab.on{background:var(--brand);color:#fff}
+  .lang{display:none} .lang.on{display:block}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+  .app{background:#fff;border-radius:var(--radius);padding:16px;box-shadow:0 4px 18px #3b2a8a10;display:flex;flex-direction:column;gap:10px}
+  .app .top{display:flex;gap:12px;align-items:center}
+  .app img{width:56px;height:56px;border-radius:16px;object-fit:cover;background:#F1EEFA}
+  .app h3{margin:0;font-size:16px}
+  .pill{display:inline-block;background:#F1EEFA;color:var(--brand);border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700}
+  .pkg{font-family:ui-monospace,monospace;font-size:12px;color:var(--soft);direction:ltr;text-align:right;word-break:break-all}
+  .bar{height:10px;background:#EEE8FF;border-radius:99px;overflow:hidden;margin-top:12px}
+  .bar>div{height:100%;width:0;background:linear-gradient(90deg,var(--brand),var(--blue));transition:width .3s}
+  .steps{margin:12px 0 0;padding:0;list-style:none;font-size:14px}
+  .steps li{padding:4px 0;color:var(--soft)} .steps li.done{color:var(--ok)} .steps li.now{color:var(--text);font-weight:700}
+  .steps li.err{color:var(--danger);font-weight:700}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(120px);background:#1C1838;color:#fff;
+    padding:12px 22px;border-radius:14px;transition:.3s;z-index:9;max-width:90vw}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .modal{position:fixed;inset:0;background:#1c183866;display:none;align-items:center;justify-content:center;z-index:8;padding:16px}
+  .modal.show{display:flex}
+  .modal .card{max-width:400px;width:100%;margin:0}
+  .empty{text-align:center;padding:30px;color:var(--soft)}
+  .hide{display:none!important}
+  ol.help{padding-inline-start:20px;line-height:1.9;font-size:14px;margin:8px 0}
+  code{background:#F1EEFA;padding:1px 6px;border-radius:6px;direction:ltr;display:inline-block}
+  a{color:var(--brand)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap brand">
+    <img src="https://raw.githubusercontent.com/ZINOU39003/zinou-store/main/store/icons/zinou-store.svg" alt="">
+    <div>
+      <h1>Zinou Store</h1>
+      <p>لوحة التحكم — إدارة تطبيقات المتجر</p>
+    </div>
+    <div class="sp"></div>
+    <button class="light hide" id="btnLogout" title="تسجيل الخروج">خروج</button>
+  </div>
+</header>
+
+<main>
+  <!-- تسجيل الدخول -->
+  <section class="card hide" id="loginCard">
+    <h2>🔑 الدخول</h2>
+    <p class="muted">أدخل مفتاح GitHub (Token) مرة واحدة، ويُحفظ في هذا المتصفح فقط.</p>
+    <div class="row" style="margin-top:12px">
+      <input type="password" id="tokenInput" class="grow" placeholder="github_pat_..." autocomplete="off">
+      <button id="btnLogin">دخول</button>
+    </div>
+    <details style="margin-top:14px">
+      <summary class="muted" style="cursor:pointer">كيف أحصل على المفتاح؟</summary>
+      <ol class="help">
+        <li>افتح <a href="https://github.com/settings/personal-access-tokens/new" target="_blank">github.com/settings/personal-access-tokens/new</a></li>
+        <li>اكتب اسماً مثل <code>zinou-admin</code>، واختر مدة الصلاحية (مثلاً سنة).</li>
+        <li>في <b>Repository access</b> اختر <b>Only select repositories</b> ثم <code>zinou-store</code>.</li>
+        <li>في <b>Permissions</b> اختر <b>Contents</b> ← <b>Read and write</b>.</li>
+        <li>اضغط <b>Generate token</b>، انسخه والصقه هنا.</li>
+      </ol>
+    </details>
+  </section>
+
+  <!-- رفع تطبيق -->
+  <section class="card hide" id="uploadCard">
+    <div class="row">
+      <div class="grow">
+        <h2>⬆️ رفع تطبيق أو تحديث</h2>
+        <div class="muted">إذا رفعت تطبيقاً موجوداً بنفس اسم الحزمة، يُعتبر تحديثاً ويصل إشعار للمستخدمين.</div>
+      </div>
+    </div>
+
+    <div class="drop" id="drop" style="margin-top:16px">
+      <div style="font-size:34px">📦</div>
+      <div id="dropText"><b>اختر ملف APK</b> أو اسحبه إلى هنا</div>
+      <div class="muted">حتى 2 جيجابايت — يُقرأ اسم الحزمة والإصدار والأيقونة تلقائياً</div>
+      <input type="file" id="apkFile" accept=".apk" hidden>
+    </div>
+
+    <label class="f">أيقونة (اختياري — إن لم تخترها تُؤخذ من التطبيق)</label>
+    <input type="file" id="iconFile" accept="image/png,image/webp,image/jpeg,image/svg+xml">
+
+    <div class="tabs">
+      <button class="tab on" data-l="ar">العربية</button>
+      <button class="tab" data-l="fr">Français</button>
+      <button class="tab" data-l="en">English</button>
+    </div>
+    <div class="lang on" data-l="ar">
+      <label class="f">اسم التطبيق</label><input type="text" id="name_ar" placeholder="اتركه فارغاً لاستعمال اسم التطبيق الأصلي">
+      <label class="f">الوصف</label><textarea id="description_ar"></textarea>
+      <label class="f">ما الجديد في هذا الإصدار</label><textarea id="changelog_ar"></textarea>
+    </div>
+    <div class="lang" data-l="fr" dir="ltr">
+      <label class="f">Nom</label><input type="text" id="name_fr">
+      <label class="f">Description</label><textarea id="description_fr"></textarea>
+      <label class="f">Nouveautés</label><textarea id="changelog_fr"></textarea>
+    </div>
+    <div class="lang" data-l="en" dir="ltr">
+      <label class="f">Name</label><input type="text" id="name">
+      <label class="f">Description</label><textarea id="description"></textarea>
+      <label class="f">What's new</label><textarea id="changelog"></textarea>
+    </div>
+
+    <div class="row" style="margin-top:18px">
+      <button id="btnUpload" disabled>🚀 نشر في المتجر</button>
+      <span class="muted" id="fileInfo"></span>
+    </div>
+
+    <div id="progress" class="hide">
+      <div class="bar"><div id="barFill"></div></div>
+      <ul class="steps" id="steps"></ul>
+    </div>
+  </section>
+
+  <!-- قائمة التطبيقات -->
+  <section class="card hide" id="listCard">
+    <div class="row" style="margin-bottom:14px">
+      <div class="grow">
+        <h2>📱 تطبيقات المتجر <span class="pill" id="count">0</span></h2>
+        <div class="muted">التغييرات تظهر في المتجر خلال دقائق.</div>
+      </div>
+      <button class="ghost" id="btnRefresh">🔄 تحديث</button>
+    </div>
+    <div class="grid" id="apps"></div>
+  </section>
+</main>
+
+<div class="modal" id="modal">
+  <div class="card">
+    <h2 id="mTitle">حذف التطبيق؟</h2>
+    <p class="muted" id="mText"></p>
+    <div class="row" style="justify-content:flex-end;margin-top:12px">
+      <button class="ghost" id="mNo">إلغاء</button>
+      <button class="danger" id="mYes">نعم، احذف</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const OWNER = 'ZINOU39003', REPO = 'zinou-store';
+const API = 'https://api.github.com';
+const R = `/repos/${OWNER}/${REPO}`;
+const DL = `https://github.com/${OWNER}/${REPO}/releases/download/`;
+const CHUNK = 10 * 1024 * 1024;
+const PROTECTED = 'com.zinou.store';
+
+const $ = id => document.getElementById(id);
+let token = '';
+try { token = localStorage.getItem('zinou_token') || ''; } catch (e) {}
+
+function toast(msg, ms = 3500) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), ms);
+}
+function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+async function gh(path, opts = {}, auth = true) {
+  const headers = { Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
+  if (auth) headers.Authorization = 'Bearer ' + token;
+  if (opts.body) headers['Content-Type'] = 'application/json';
+  const r = await fetch(API + path, { cache: 'no-store', ...opts, headers });
+  if (!r.ok) {
+    let m = ''; try { m = (await r.json()).message; } catch (e) {}
+    const err = new Error(`${r.status} ${m}`); err.status = r.status; throw err;
+  }
+  return r.status === 204 ? null : r.json();
+}
+function b64ToUtf8(b64) {
+  const bin = atob(b64.replace(/\n/g, ''));
+  return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
+}
+function utf8ToB64(str) {
+  const bytes = new TextEncoder().encode(str); let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+function fileToB64(blob) {
+  return new Promise((res, rej) => {
+    const fr = new FileReader();
+    fr.onload = () => res(fr.result.split(',')[1] || '');
+    fr.onerror = () => rej(fr.error);
+    fr.readAsDataURL(blob);
+  });
+}
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const mb = b => (b / 1024 / 1024).toFixed(1) + ' MB';
+
+/* ---------- الدخول ---------- */
+async function login(t) {
+  token = t.trim();
+  try {
+    const repo = await gh(R);
+    if (!repo.permissions || !repo.permissions.push) throw new Error('المفتاح لا يملك صلاحية الكتابة (Contents: Read and write)');
+    try { localStorage.setItem('zinou_token', token); } catch (e) {}
+    showApp(); return true;
+  } catch (e) {
+    token = '';
+    toast(e.status === 401 ? 'المفتاح غير صحيح' : 'تعذر الدخول: ' + e.message, 5000);
+    return false;
+  }
+}
+function showApp() {
+  $('loginCard').classList.add('hide');
+  ['uploadCard', 'listCard', 'btnLogout'].forEach(id => $(id).classList.remove('hide'));
+  loadApps();
+}
+$('btnLogin').onclick = () => login($('tokenInput').value);
+$('tokenInput').onkeydown = e => { if (e.key === 'Enter') login($('tokenInput').value); };
+$('btnLogout').onclick = () => { try { localStorage.removeItem('zinou_token'); } catch (e) {} location.reload(); };
+
+/* ---------- قائمة التطبيقات ---------- */
+async function readStore() {
+  const f = await gh(`${R}/contents/store/apps.json?ref=main&t=${Date.now()}`);
+  return { sha: f.sha, data: JSON.parse(b64ToUtf8(f.content)) };
+}
+async function loadApps() {
+  $('apps').innerHTML = '<div class="empty">جاري التحميل…</div>';
+  try {
+    const { data } = await readStore();
+    $('count').textContent = data.apps.length;
+    if (!data.apps.length) { $('apps').innerHTML = '<div class="empty">لا توجد تطبيقات بعد</div>'; return; }
+    $('apps').innerHTML = data.apps.map(a => `
+      <div class="app">
+        <div class="top">
+          <img src="${esc(a.icon || 'https://raw.githubusercontent.com/ZINOU39003/zinou-store/main/store/icons/zinou-store.svg')}" alt="" loading="lazy">
+          <div class="grow">
+            <h3>${esc(a.name_ar || a.name)}</h3>
+            <span class="pill">v${esc(a.versionName)}</span> <span class="muted">${esc(a.size || '')}</span>
+          </div>
+        </div>
+        <div class="pkg">${esc(a.packageName)} • versionCode ${esc(a.versionCode)}</div>
+        <div class="muted">${esc(a.description_ar || a.description || '')}</div>
+        <div class="row">
+          <a class="btn ghost" href="${esc(a.apkUrl)}" target="_blank">⬇️ تنزيل</a>
+          ${a.packageName === PROTECTED ? '<span class="muted">تطبيق المتجر نفسه</span>'
+            : `<button class="danger" data-del="${esc(a.packageName)}">🗑 حذف</button>`}
+        </div>
+      </div>`).join('');
+    document.querySelectorAll('[data-del]').forEach(b => b.onclick = () => askDelete(b.dataset.del, data.apps));
+  } catch (e) {
+    $('apps').innerHTML = `<div class="empty">تعذر تحميل القائمة: ${esc(e.message)}</div>`;
+  }
+}
+$('btnRefresh').onclick = loadApps;
+
+/* ---------- الحذف ---------- */
+let pendingDelete = null;
+function askDelete(pkg, apps) {
+  const a = apps.find(x => x.packageName === pkg);
+  pendingDelete = pkg;
+  $('mText').textContent = `سيُحذف "${a.name_ar || a.name}" من المتجر ومن الإصدارات. المستخدمون الذين ثبّتوه سيبقى عندهم لكن لن تصلهم تحديثات.`;
+  $('modal').classList.add('show');
+}
+$('mNo').onclick = () => $('modal').classList.remove('show');
+$('mYes').onclick = async () => {
+  $('modal').classList.remove('show');
+  const pkg = pendingDelete; if (!pkg) return;
+  toast('جاري الحذف…', 20000);
+  try {
+    const { sha, data } = await readStore();
+    const app = data.apps.find(a => a.packageName === pkg);
+    if (!app) { toast('التطبيق غير موجود'); return loadApps(); }
+    data.apps = data.apps.filter(a => a.packageName !== pkg);
+    await gh(`${R}/contents/store/apps.json`, { method: 'PUT', body: JSON.stringify({
+      message: `Remove ${app.name} from store`, content: utf8ToB64(JSON.stringify(data, null, 2) + '\n'), sha, branch: 'main' }) });
+
+    // حذف ملف APK من الإصدارات (إن كان في هذا المستودع)
+    if ((app.apkUrl || '').startsWith(DL)) {
+      const tag = decodeURIComponent(app.apkUrl.slice(DL.length).split('/')[0]);
+      try {
+        const rel = await gh(`${R}/releases/tags/${encodeURIComponent(tag)}`);
+        await gh(`${R}/releases/${rel.id}`, { method: 'DELETE' });
+        await gh(`${R}/git/refs/tags/${encodeURIComponent(tag)}`, { method: 'DELETE' }).catch(() => {});
+      } catch (e) { console.warn('release', e); }
+    }
+    // حذف الأيقونة إن كانت خاصة بهذا التطبيق
+    const m = (app.icon || '').match(/\/main\/(store\/icons\/[^?]+)/);
+    if (m && m[1].includes(pkg)) {
+      try {
+        const f = await gh(`${R}/contents/${m[1]}?ref=main`);
+        await gh(`${R}/contents/${m[1]}`, { method: 'DELETE', body: JSON.stringify({ message: `Remove icon of ${pkg}`, sha: f.sha, branch: 'main' }) });
+      } catch (e) { console.warn('icon', e); }
+    }
+    toast('✅ تم حذف التطبيق');
+  } catch (e) {
+    toast(e.status === 409 ? 'تغيّرت القائمة في نفس الوقت، حاول مرة أخرى' : 'فشل الحذف: ' + e.message, 6000);
+  }
+  loadApps();
+};
+
+/* ---------- الرفع ---------- */
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x === t));
+  document.querySelectorAll('.lang').forEach(x => x.classList.toggle('on', x.dataset.l === t.dataset.l));
+});
+let apk = null;
+const drop = $('drop');
+drop.onclick = () => $('apkFile').click();
+$('apkFile').onchange = e => pickApk(e.target.files[0]);
+drop.ondragover = e => { e.preventDefault(); drop.classList.add('over'); };
+drop.ondragleave = () => drop.classList.remove('over');
+drop.ondrop = e => { e.preventDefault(); drop.classList.remove('over'); pickApk(e.dataTransfer.files[0]); };
+function pickApk(f) {
+  if (!f) return;
+  if (!/\.apk$/i.test(f.name)) return toast('اختر ملفاً بصيغة .apk');
+  if (f.size > 2 * 1024 ** 3) return toast('الحد الأقصى 2 جيجابايت');
+  apk = f;
+  $('dropText').innerHTML = `<b>${esc(f.name)}</b>`;
+  $('fileInfo').textContent = mb(f.size);
+  $('btnUpload').disabled = false;
+}
+
+let stepsEl;
+function step(text, state = 'now') {
+  if (stepsEl.lastChild && stepsEl.lastChild.classList.contains('now')) stepsEl.lastChild.className = 'done';
+  const li = document.createElement('li'); li.className = state;
+  li.textContent = (state === 'err' ? '❌ ' : state === 'done' ? '✅ ' : '⏳ ') + text;
+  stepsEl.appendChild(li); return li;
+}
+function bar(p) { $('barFill').style.width = Math.round(p) + '%'; }
+
+$('btnUpload').onclick = async () => {
+  if (!apk) return;
+  const btn = $('btnUpload'); btn.disabled = true;
+  $('progress').classList.remove('hide'); stepsEl = $('steps'); stepsEl.innerHTML = ''; bar(0);
+  try {
+    step('تجهيز الرفع');
+    const ref = await gh(`${R}/git/ref/heads/main`);
+    const mainSha = ref.object.sha;
+    const baseCommit = await gh(`${R}/git/commits/${mainSha}`);
+
+    const tree = [];
+    const parts = Math.ceil(apk.size / CHUNK);
+    for (let i = 0; i < parts; i++) {
+      step(`رفع الملف: الجزء ${i + 1} من ${parts}`);
+      const b64 = await fileToB64(apk.slice(i * CHUNK, (i + 1) * CHUNK));
+      let blob, tries = 0;
+      while (true) {
+        try { blob = await gh(`${R}/git/blobs`, { method: 'POST', body: JSON.stringify({ content: b64, encoding: 'base64' }) }); break; }
+        catch (e) { if (++tries >= 3) throw e; await sleep(3000 * tries); }
+      }
+      tree.push({ path: `incoming/part-${String(i).padStart(4, '0')}`, mode: '100644', type: 'blob', sha: blob.sha });
+      bar((i + 1) / parts * 75);
+    }
+
+    const meta = {};
+    ['name', 'name_ar', 'name_fr', 'description', 'description_ar', 'description_fr', 'changelog', 'changelog_ar', 'changelog_fr']
+      .forEach(k => { const v = $(k).value.trim(); if (v) meta[k] = v; });
+    tree.push({ path: 'incoming/meta.json', mode: '100644', type: 'blob', content: JSON.stringify(meta, null, 2) });
+
+    const ic = $('iconFile').files[0];
+    if (ic) {
+      const ext = (ic.name.split('.').pop() || 'png').toLowerCase();
+      const b = await gh(`${R}/git/blobs`, { method: 'POST', body: JSON.stringify({ content: await fileToB64(ic), encoding: 'base64' }) });
+      tree.push({ path: `incoming/icon.${ext}`, mode: '100644', type: 'blob', sha: b.sha });
+    }
+
+    step('إرسال الطلب إلى GitHub');
+    const t = await gh(`${R}/git/trees`, { method: 'POST', body: JSON.stringify({ base_tree: baseCommit.tree.sha, tree }) });
+    const c = await gh(`${R}/git/commits`, { method: 'POST', body: JSON.stringify({ message: `Upload ${apk.name}`, tree: t.sha, parents: [mainSha] }) });
+    const branch = `upload/${Date.now().toString(36)}`;
+    await gh(`${R}/git/refs`, { method: 'POST', body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: mainSha }) });
+    await gh(`${R}/git/refs/heads/${branch}`, { method: 'PATCH', body: JSON.stringify({ sha: c.sha, force: true }) });
+    bar(80);
+
+    step('GitHub يقرأ التطبيق وينشره (1–3 دقائق)');
+    const run = await waitRun(branch, c.sha);
+    if (run.conclusion !== 'success') {
+      const li = step('فشل النشر — ', 'err');
+      const a = document.createElement('a'); a.href = run.html_url; a.target = '_blank'; a.textContent = 'اعرض التفاصيل';
+      li.appendChild(a); throw null;
+    }
+    bar(100);
+    step('تم النشر في المتجر 🎉', 'done');
+    toast('✅ تم نشر التطبيق');
+    apk = null; $('apkFile').value = ''; $('iconFile').value = '';
+    $('dropText').innerHTML = '<b>اختر ملف APK</b> أو اسحبه إلى هنا'; $('fileInfo').textContent = '';
+    document.querySelectorAll('.lang input, .lang textarea').forEach(x => x.value = '');
+    loadApps();
+  } catch (e) {
+    if (e) step('خطأ: ' + e.message, 'err');
+    btn.disabled = !apk;
+    return;
+  }
+};
+
+async function waitRun(branch, sha) {
+  const start = Date.now();
+  while (Date.now() - start < 20 * 60 * 1000) {
+    await sleep(10000);
+    try {
+      const r = await gh(`${R}/actions/runs?branch=${encodeURIComponent(branch)}&per_page=5`, {}, false);
+      const run = (r.workflow_runs || []).find(x => x.head_sha === sha);
+      if (run) {
+        bar(run.status === 'completed' ? 98 : 90);
+        if (run.status === 'completed') return run;
+      }
+    } catch (e) { /* نعيد المحاولة */ }
+  }
+  throw new Error('استغرق النشر وقتاً طويلاً، تحقق من صفحة Actions في GitHub');
+}
+
+/* ---------- البداية ---------- */
+if (token) login(token).then(ok => { if (!ok) $('loginCard').classList.remove('hide'); });
+else $('loginCard').classList.remove('hide');
+</script>
+</body>
+</html>

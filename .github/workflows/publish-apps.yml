@@ -1,7 +1,6 @@
-name: Publish apps
+name: Publish app
 
-# ارفع ملفات APK إلى فرع upload/... مع ملف incoming/releases.json
-# فتُنشر كإصدارات (Releases) تلقائياً ثم يُحذف الفرع.
+# لوحة التحكم ترفع ملف APK إلى فرع upload/... فيتم نشره هنا تلقائياً
 on:
   push:
     branches: ['upload/**']
@@ -9,25 +8,50 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: store-publish
+  cancel-in-progress: false
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
 
-      - name: Create releases
+      - name: Check upload
+        id: chk
+        run: |
+          if [ -f incoming/meta.json ]; then echo "ok=1" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Prepare
+        if: steps.chk.outputs.ok == '1'
+        run: |
+          pip install --quiet pyaxmlparser
+          git fetch --depth 20 origin main
+          git worktree add /tmp/main origin/main
+
+      - name: Publish
+        if: steps.chk.outputs.ok == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 tools/process_upload.py /tmp/main
+
+      - name: Update store list
+        if: steps.chk.outputs.ok == '1'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          python3 - <<'PY'
-          import json, subprocess
-          for r in json.load(open('incoming/releases.json')):
-              subprocess.run(['gh', 'release', 'delete', r['tag'], '-y', '--cleanup-tag'], check=False)
-              subprocess.run(['gh', 'release', 'create', r['tag'], r['file'],
-                              '--target', 'main', '--title', r['title'],
-                              '--notes', r.get('notes', ''), '--latest=false'], check=True)
-          PY
+          cd /tmp/main
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add store
+          git commit -m "Publish $(cat /tmp/summary)"
+          for i in 1 2 3; do
+            git push origin HEAD:main && break
+            git fetch --depth 20 origin main && git rebase origin/main
+          done
+          if [ -f /tmp/old_tag ]; then gh release delete "$(cat /tmp/old_tag)" -y --cleanup-tag || true; fi
 
       - name: Delete upload branch
-        if: always()
-        run: git push origin --delete "$GITHUB_REF_NAME"
+        if: always() && steps.chk.outputs.ok == '1'
+        run: git push origin --delete "$GITHUB_REF_NAME" || true
