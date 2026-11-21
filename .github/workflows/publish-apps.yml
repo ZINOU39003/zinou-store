@@ -1,0 +1,33 @@
+name: Publish apps
+
+# ارفع ملفات APK إلى فرع upload/... مع ملف incoming/releases.json
+# فتُنشر كإصدارات (Releases) تلقائياً ثم يُحذف الفرع.
+on:
+  push:
+    branches: ['upload/**']
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Create releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, subprocess
+          for r in json.load(open('incoming/releases.json')):
+              subprocess.run(['gh', 'release', 'delete', r['tag'], '-y', '--cleanup-tag'], check=False)
+              subprocess.run(['gh', 'release', 'create', r['tag'], r['file'],
+                              '--target', 'main', '--title', r['title'],
+                              '--notes', r.get('notes', ''), '--latest=false'], check=True)
+          PY
+
+      - name: Delete upload branch
+        if: always()
+        run: git push origin --delete "$GITHUB_REF_NAME"

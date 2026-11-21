@@ -14,6 +14,40 @@
       "changelog": "First release",
       "changelog_ar": "أول إصدار",
       "changelog_fr": "Première version"
+    },
+    {
+      "packageName": "com.zinou.auto.headunit",
+      "name": "ZINOU Auto",
+      "name_ar": "ZINOU Auto",
+      "name_fr": "ZINOU Auto",
+      "description": "Turns your car screen or tablet into a smart head unit.",
+      "description_ar": "يحوّل شاشة السيارة أو اللوحي إلى شاشة ذكية للسيارة.",
+      "description_fr": "Transforme l'écran de votre voiture ou votre tablette en autoradio intelligent.",
+      "icon": "https://raw.githubusercontent.com/ZINOU39003/zinou-store/main/store/icons/zinou-auto.png",
+      "versionCode": 124,
+      "versionName": "4.1.0-beta1",
+      "size": "28 MB",
+      "apkUrl": "https://github.com/ZINOU39003/zinou-store/releases/download/zinou-auto-v4.1.0-beta1/ZinouAuto.apk",
+      "changelog": "Version 4.1.0 beta",
+      "changelog_ar": "الإصدار 4.1.0 التجريبي",
+      "changelog_fr": "Version 4.1.0 bêta"
+    },
+    {
+      "packageName": "com.zinou.auto.phone",
+      "name": "ZINOU Auto Phone",
+      "name_ar": "ZINOU Auto للهاتف",
+      "name_fr": "ZINOU Auto Téléphone",
+      "description": "Phone companion app for ZINOU Auto.",
+      "description_ar": "تطبيق الهاتف المرافق لـ ZINOU Auto.",
+      "description_fr": "Application téléphone compagnon de ZINOU Auto.",
+      "icon": "https://raw.githubusercontent.com/ZINOU39003/zinou-store/main/store/icons/zinou-auto.png",
+      "versionCode": 1,
+      "versionName": "1.0",
+      "size": "1 MB",
+      "apkUrl": "https://github.com/ZINOU39003/zinou-store/releases/download/zinou-auto-phone-v1.0/ZinouAutoPhone.apk",
+      "changelog": "First release",
+      "changelog_ar": "أول إصدار",
+      "changelog_fr": "Première version"
     }
   ]
 }
