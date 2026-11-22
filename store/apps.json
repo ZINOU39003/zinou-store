@@ -89,6 +89,17 @@
       "size": "6.0 MB",
       "apkUrl": "https://github.com/ZINOU39003/zinou-store/releases/download/com.zinou.surround360-v1/ZINOU-360.apk",
       "icon": ""
+    },
+    {
+      "packageName": "com.zinou.dvr",
+      "name": "DVR ZINOU",
+      "description_ar": "DVR ZINOU",
+      "changelog_ar": "V1",
+      "versionCode": 1,
+      "versionName": "1.0.0",
+      "size": "12.0 MB",
+      "apkUrl": "https://github.com/ZINOU39003/zinou-store/releases/download/com.zinou.dvr-v1/DVR-ZINOU.apk",
+      "icon": "https://raw.githubusercontent.com/ZINOU39003/zinou-store/main/store/icons/com.zinou.dvr.png?v=1"
     }
   ]
 }
