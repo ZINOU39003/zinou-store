@@ -26,6 +26,7 @@ jobs:
       - name: Prepare
         if: steps.chk.outputs.ok == '1'
         run: |
+          sudo apt-get install -y -qq librsvg2-bin >/dev/null
           pip install --quiet pyaxmlparser androguard pillow
           git fetch --depth 20 origin main
           git worktree add /tmp/main origin/main

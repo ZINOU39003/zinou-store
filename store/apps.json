@@ -40,7 +40,7 @@
       "description": "Phone companion app for ZINOU Auto.",
       "description_ar": "تطبيق الهاتف المرافق لـ ZINOU Auto.",
       "description_fr": "Application téléphone compagnon de ZINOU Auto.",
-      "icon": "https://raw.githubusercontent.com/ZINOU39003/zinou-store/main/store/icons/zinou-auto.png",
+      "icon": "https://raw.githubusercontent.com/ZINOU39003/zinou-store/main/store/icons/com.zinou.auto.phone.png?v=1",
       "versionCode": 1,
       "versionName": "1.0",
       "size": "0.9 MB",
@@ -88,7 +88,7 @@
       "versionName": "1.0.0",
       "size": "6.0 MB",
       "apkUrl": "https://github.com/ZINOU39003/zinou-store/releases/download/com.zinou.surround360-v1/ZINOU-360.apk",
-      "icon": ""
+      "icon": "https://raw.githubusercontent.com/ZINOU39003/zinou-store/main/store/icons/com.zinou.surround360.png?v=1"
     },
     {
       "packageName": "com.zinou.dvr",
